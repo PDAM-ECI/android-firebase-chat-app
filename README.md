@@ -41,7 +41,7 @@
       }
  ```
  
-5) Add the following logic to the onAuthStateChanged method in order to start the _MainActivity_ once the user is authenticated:
+5) Add the following logic to the _onAuthStateChanged_ method in order to start the _MainActivity_ once the user is authenticated:
      
  ```java
      @Override
@@ -62,6 +62,16 @@
      <uses-permission android:name="android.permission.INTERNET" />
    ```   
     
+ 7) Implement the _onClickListener_ for the login button:
+```java
+       public void onLoginClicked( View view )
+     {
+         loginButton.setEnabled( false );
+         firebaseAuth.signInAnonymously();
+     }
+```      
+    
+   
 **Part 2: Saving data to the Firebase Realtime Database**
     
 1) Edit the layout of the _MainActivity_ with the following code:
