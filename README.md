@@ -238,3 +238,87 @@
 
 
 1) Implement a the clickListener for the button Send Photo with the following code to be able
+
+```java
+    public void onSendPhotoClicked( View view )
+   {
+       Intent takePictureIntent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
+       if ( takePictureIntent.resolveActivity( getPackageManager() ) != null )
+       {
+           startActivityForResult( takePictureIntent, REQUEST_IMAGE_CAPTURE );
+       }
+   }
+  ```
+  
+2) Process the result and obtain the captured photo by overriding the _onActivityResult_ method.
+
+```java
+   @Override
+   protected void onActivityResult( int requestCode, int resultCode, Intent data )
+   {
+       if ( requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK )
+       {
+
+           Bundle extras = data.getExtras();
+           Bitmap imageBitmap = (Bitmap) extras.get( "data" );
+           UploadPostTask uploadPostTask = new UploadPostTask();
+           uploadPostTask.execute( imageBitmap );
+       }
+   }
+  ```
+
+ 3) Create the _UploadPostTask_ class by extending the _AsyncTask_ class:
+ 
+ ```java
+  @SuppressWarnings("VisibleForTests")
+  private class UploadPostTask
+      extends AsyncTask<Bitmap, Void, Void>
+  {
+
+      @Override
+      protected Void doInBackground( Bitmap... params )
+      {
+          Bitmap bitmap = params[0];
+          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+          bitmap.compress( Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream );
+          storageRef.child( UUID.randomUUID().toString() + "jpg" ).putBytes(
+              byteArrayOutputStream.toByteArray() ).addOnSuccessListener(
+              new OnSuccessListener<UploadTask.TaskSnapshot>()
+              {
+                  @Override
+                  public void onSuccess( UploadTask.TaskSnapshot taskSnapshot )
+                  {
+                      if ( taskSnapshot.getDownloadUrl() != null )
+                      {
+                          String imageUrl = taskSnapshot.getDownloadUrl().toString();
+                          final Message message = new Message( imageUrl );
+                          runOnUiThread( new Runnable()
+                          {
+                              @Override
+                              public void run()
+                              {
+                                  messagesAdapter.addMessage( message );
+                              }
+                          } );
+                      }
+                  }
+              } );
+
+          return null;
+      }
+  }
+  
+   ```
+ 
+ 
+ 4) Test that your application works and your image is uplaoded correctly.
+ 
+ 
+ **Part 4: Bonus**
+ 
+ Implement a dialog that is shown when the user clicks the Send Photo button that allows the user to not only take a picture but also select the image from the user images.
+ 
+ 
+ Dialogs: https://developer.android.com/guide/topics/ui/dialogs.html
+ Image Picker: http://stackoverflow.com/questions/5309190/android-pick-images-from-gallery
+ 
