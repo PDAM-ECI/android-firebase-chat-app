@@ -56,7 +56,7 @@
      }
  ```     
     
- 1) Add the following permissions to the _AndroidManifest.xml_ above the _<application>_ tag
+ 6) Add the following permissions to the _AndroidManifest.xml_ above the _application_ tag
  
  ```xml
      <uses-permission android:name="android.permission.INTERNET" />
@@ -227,10 +227,12 @@
 
 **Part 3: Using the Firebase Storage**
 
-1) Add the following permissions to the Android Manifest above the _<application>_ tag
+1) Add the following permissions to the Android Manifest above the application tag
 
 ```xml
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+          android:name="android.hardware.camera"
+          android:required="true" />
   ```
 
 
