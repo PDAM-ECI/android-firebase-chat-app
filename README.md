@@ -320,5 +320,6 @@
  
  
  Dialogs: https://developer.android.com/guide/topics/ui/dialogs.html
+ 
  Image Picker: http://stackoverflow.com/questions/5309190/android-pick-images-from-gallery
  
