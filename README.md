@@ -56,7 +56,7 @@
      }
  ```     
     
-**Part 2: Using the Firebase Realtime Database**
+**Part 2: Saving data to the Firebase Realtime Database**
     
 1) Edit the layout of the _MainActivity_ with the following code:
 
@@ -132,5 +132,88 @@
  ```
 
 
-2)
+2) Create a Message java class that will contain a message String and a user String.
  
+ 
+3) Create a database reference to the 'messages' node by adding the following code to the _MainActivity_:
+ 
+ 
+ ```java
+      FirebaseDatabase database = FirebaseDatabase.getInstance();
+     
+      FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+     
+      DatabaseReference databaseReference = database.getReference( "messages" );
+ ```
+ 
+4) Create an _onClick_ event listener for the Send Message button and inside create an instance of the _Message_ class and then send this object to the firebase database as follows:
+
+```java
+      databaseReference.push().setValue( message );
+ ```
+
+5) Verify on the Firebase console under the database option that the node is store as expected.
+
+
+**Part 3: Reading data to the Firebase Realtime Database**
+
+6) Create a _ChildEventListener_ on the MainActivity and add this to the database reference:
+ ```java
+       databaseReference.addChildEventListener( messagesListener );
+  ```
+ 
+7) Uncomment the _MessagesAdapter_ class and make sure it compiles properly.
+ 
+8) Create an instance of the _MessagesAdapter_ and add it to the _RecyclerView_ that is defined in the layout after configuring it:
+
+```java
+       recyclerView.setHasFixedSize( true );
+       LinearLayoutManager linearLayoutManager = new LinearLayoutManager( this );
+       linearLayoutManager.setReverseLayout( true );
+       recyclerView.setLayoutManager( linearLayoutManager );
+       recyclerView.setAdapter( messagesAdapter );
+  ```
+
+9) Add the following method to the _MainActivity_ and called it on the _onChildAdded_ and _onChildChanged_ methods of the _ChildEventListener_.
+
+```java
+   private void updateMessage( DataSnapshot dataSnapshot )
+       {
+           final Message message = dataSnapshot.getValue( Message.class );
+           if ( message != null )
+           {
+               runOnUiThread( new Runnable()
+               {
+                   @Override
+                   public void run()
+                   {
+                       messagesAdapter.addMessage( message );
+                   }
+               } );
+           }
+       }
+   
+  ```
+  
+  
+ 10) Call the removeMessage method on the onChildRemoved method of the ChildEventListener:
+ 
+  
+```java
+     @Override
+      public void onChildRemoved( DataSnapshot dataSnapshot )
+      {
+          Message message = dataSnapshot.getValue( Message.class );
+          if ( message != null )
+          {
+              messagesAdapter.removeMessage( message );
+          }
+      }
+
+  ```
+  
+  
+11) Add messages from the form and verify that the messages are rendered properly.
+  
+  
+12) Remove a message from the Firebase console and verify that message is removed from the list correctly.
