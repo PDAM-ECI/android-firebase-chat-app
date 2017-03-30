@@ -56,6 +56,12 @@
      }
  ```     
     
+ 1) Add the following permissions to the _AndroidManifest.xml_ above the _<application>_ tag
+ 
+ ```xml
+     <uses-permission android:name="android.permission.INTERNET" />
+   ```   
+    
 **Part 2: Saving data to the Firebase Realtime Database**
     
 1) Edit the layout of the _MainActivity_ with the following code:
@@ -217,3 +223,16 @@
   
   
 12) Remove a message from the Firebase console and verify that message is removed from the list correctly.
+
+
+**Part 3: Using the Firebase Storage**
+
+1) Add the following permissions to the Android Manifest above the _<application>_ tag
+
+```xml
+    <uses-permission android:name="android.permission.INTERNET" />
+  ```
+
+
+
+1) Implement a the clickListener for the button Send Photo with the following code to be able
