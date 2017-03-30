@@ -6,13 +6,14 @@
 
 1) Download the project and make sure it works properly.
 
-2) Add the following Firebase dependencies to your build.gradle file:
+2) Add the following Firebase and Picaso dependencies to your build.gradle file:
 
  ```groovy
       compile 'com.google.firebase:firebase-core:10.2.0'
       compile 'com.google.firebase:firebase-database:10.2.0'
       compile 'com.google.firebase:firebase-auth:10.2.0'
       compile 'com.google.firebase:firebase-storage:10.2.0'
+      compile 'com.squareup.picasso:picasso:2.5.2'
  ```
   
 3) Create an activity called _LoginActivity_ that has a button that will do anonymous authentication with the Firebase service.
